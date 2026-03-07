@@ -3,9 +3,11 @@ Placements router — ad placement CRUD & conversion analytics.
 Stage 5: Interactive Display & Analytics.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from typing import Optional
+
+from app.auth import get_current_user, require_role
 
 router = APIRouter()
 
@@ -30,7 +32,10 @@ async def log_event(event: PlacementEvent):
 
 
 @router.get("/analytics/{video_id}")
-async def get_analytics(video_id: str):
+async def get_analytics(
+    video_id: str,
+    user: dict = Depends(require_role("brand")),
+):
     """
     Return aggregated placement metrics for a video.
     Auth0 RBAC: brand role required.
@@ -46,7 +51,10 @@ async def get_analytics(video_id: str):
 
 
 @router.get("/slots/{video_id}")
-async def get_ad_slots(video_id: str):
+async def get_ad_slots(
+    video_id: str,
+    user: dict = Depends(get_current_user),
+):
     """
     Return detected 3D ad slots for a video.
     Each slot contains 9-point bounding box coordinates.

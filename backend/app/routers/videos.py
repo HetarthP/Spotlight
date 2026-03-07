@@ -3,10 +3,11 @@ Videos router — upload handling & processing triggers.
 Stages 1-2: Ingestion → 3D Intelligence.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from app.workers.tasks import process_video_task
+from app.auth import get_current_user, require_role
 
 router = APIRouter()
 
@@ -23,7 +24,10 @@ class ProcessRequest(BaseModel):
 
 
 @router.post("/ingest")
-async def ingest_video(payload: VideoIngestRequest):
+async def ingest_video(
+    payload: VideoIngestRequest,
+    user: dict = Depends(require_role("creator")),
+):
     """
     Record a new video upload.
     Links imdbID → cloudinary_public_id in the database.
@@ -37,7 +41,10 @@ async def ingest_video(payload: VideoIngestRequest):
 
 
 @router.post("/process")
-async def process_video(payload: ProcessRequest):
+async def process_video(
+    payload: ProcessRequest,
+    user: dict = Depends(require_role("creator")),
+):
     """
     Kick off the async processing pipeline:
     1. Frame extraction via Cloudinary

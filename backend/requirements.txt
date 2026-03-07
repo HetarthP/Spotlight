@@ -22,6 +22,9 @@ redis>=5.2.0
 # CORS
 python-multipart>=0.0.18
 
+# Auth0 JWT verification
+PyJWT[crypto]>=2.9.0
+
 # Database (async optional)
 psycopg2-binary>=2.9.10
 sqlalchemy>=2.0.36
