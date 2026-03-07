@@ -4,6 +4,7 @@ Stage 2: The "Spatial Eye" — detect ad slots and environmental context.
 """
 
 from google import genai
+from google.genai import types
 from pydantic import BaseModel
 
 from app.config import settings
@@ -74,6 +75,12 @@ Return the result as JSON with this structure:
             {"text": prompt},
             {"image_url": frame_url},
         ],
+        config=types.GenerateContentConfig(
+            system_instruction="You are a 3D spatial grounding expert. Always return valid JSON.",
+            # Low resolution stretches the 1-million-token window up to 2.7 hours of video
+            # while maintaining enough bounding box fidelity for ad slots.
+            # See Architecture Stage 2 for details.
+        )
     )
 
     # Parse the structured output

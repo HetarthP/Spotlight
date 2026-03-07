@@ -19,18 +19,22 @@ FRAME_INTERVAL = 2.0
 def process_video_task(self, video_id: str):
     """
     Full pipeline for a single video:
-    1. Extract keyframes from Cloudinary (Stage 2)
-    2. Run Gemini 3D grounding on each frame (Stage 2)
-    3. Stream coordinates to Backboard.io for smoothing (Stage 3)
-    4. Build VFX composition URLs (Stage 4)
+    1. If video > 45 mins, chunk into 30-minute segments via FFmpeg.
+    2. Extract keyframes from Cloudinary (Stage 2)
+    3. Run Gemini 3D grounding on each chunk in parallel (Stage 2)
+    4. Stream coordinates to Backboard.io for smoothing (Stage 3)
+    5. Build VFX composition URLs (Stage 4)
     """
     logger.info(f"[Task {self.request.id}] Starting pipeline for video: {video_id}")
 
     self.update_state(state="EXTRACTING_FRAMES", meta={"video_id": video_id})
 
-    # ── Stage 2a: Frame Extraction ─────────────
-    # TODO: Query video duration from Cloudinary API, then generate frame URLs
-    frame_times = [i * FRAME_INTERVAL for i in range(5)]  # placeholder: first 10s
+    # ── Stage 2a: Segmenting & Frame Extraction ─
+    # TODO: Query video duration. If > 45 mins, use FFmpeg (Heavy Compute Node)
+    # to slice into 30-minute chunks for parallel Gemini processing.
+    
+    # Placeholder: Assuming single chunk for now, extract first 10s of frames
+    frame_times = [i * FRAME_INTERVAL for i in range(5)]
     frame_urls = [extract_frame_url(video_id, t) for t in frame_times]
 
     logger.info(f"  Extracted {len(frame_urls)} frame URLs")

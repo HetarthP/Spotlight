@@ -5,14 +5,27 @@ Run: uvicorn app.main:app --reload
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+from prisma import Prisma
+
+db = Prisma()
 
 from app.config import settings
 from app.routers import movies, videos, placements
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Connect to the database on startup
+    await db.connect()
+    yield
+    # Disconnect from the database on shutdown
+    await db.disconnect()
 
 app = FastAPI(
     title="VPP API",
     description="Virtual Product Placement — API for AI-powered ad slot detection and VFX composition.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # ── CORS ──────────────────────────────────────
@@ -42,3 +55,13 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/video/{imdb_id}")
+async def get_video_slots(imdb_id: str):
+    # Fetch movie placements from OMDb linked data
+    video = await db.video.find_unique(
+        where={'imdbId': imdb_id},
+        include={'slots': True}
+    )
+    return video

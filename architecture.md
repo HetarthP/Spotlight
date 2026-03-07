@@ -11,7 +11,7 @@ Before any code runs, the environment is architected for high-performance media 
 | **Frontend Hosting** | Vercel | Hosts the Next.js 15 app. Optimized for edge-rendering OMDb search results and streaming the Cloudinary Video Player. |
 | **API Orchestration** | AWS ECS Fargate | A containerized FastAPI cluster handling request routing, OMDb metadata fetching, and database transactions. |
 | **Heavy Compute** | Vultr GPU Nodes | Dedicated Ubuntu instances with NVIDIA GPUs running Celery Workers for FFmpeg frame shredding and local AI inference. |
-| **Database** | Postgres (RDS) + Prisma | Stores the `imdbID` movie index, User/Brand profiles, and 3D coordinate arrays. |
+| **Database** | Postgres + Prisma (`prisma-client-py`) | Ghost-Merchant schema: Stores the `imdbID` movie index (`Video`) and 3D Ad Slots (`AdSlot` with JSON BBox coordinates). Typed Python client for FastAPI. |
 | **Identity** | Auth0 | Manages Role-Based Access Control (RBAC) separating the Creator Dashboard (uploading) from the Brand Dashboard (bidding/placement). |
 
 ```mermaid
@@ -88,6 +88,11 @@ sequenceDiagram
    - **3D Grounding** — Analyzes frames to detect "Ad Slots" (flat surfaces, hands).
    - **Output** — Returns a 9-point 3D Bounding Box: `[x, y, z, w, h, d, roll, pitch, yaw]`.
    - **Environmental Logic** — Detects Kelvin temperature (e.g., `4500K`) and shadow direction.
+
+> [!TIP]
+> **Long-Form Video Optimization (45m+)**
+> Gemini 2.0 Flash has a 1-million-token context window, fitting ~45-55 mins of video. For feature films (2h+), FastAPI/Celery chunks the video into 30-min segments via FFmpeg and processes them in parallel.
+> To further stretch the token limit (up to 2.7 hours per request), we pass `mediaResolution: 'low'` to the Gemini API, preserving enough bounding box fidelity while saving tokens.
 
 ---
 
@@ -167,7 +172,7 @@ flowchart LR
 | **State Memory** | Backboard.io | Temporal Resonance for anti-jitter consistency |
 | **Metadata** | OMDb API | Netflix-style discovery and indexing via `imdbID` |
 | **Backend** | FastAPI + Celery | Async worker management for Vultr GPU tasks |
-| **Database** | Postgres + Prisma | Relational storage for 3D ad slots and marketplace data |
+| **Database** | Postgres + Prisma | Ghost-Merchant schema (`Video` ↔ `AdSlot` relations) with `prisma-client-py` for native FastAPI asyncio integration |
 | **Identity** | Auth0 | RBAC for secure Brand vs. Creator access |
 
 ---

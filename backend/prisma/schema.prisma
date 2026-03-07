@@ -1,0 +1,29 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-py" // Vital for FastAPI integration
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id        String   @id @default(cuid())
+  imdbId    String   @unique // Linked to OMDb
+  title     String
+  publicId  String   // Cloudinary ID
+  slots     AdSlot[]
+  createdAt DateTime @default(now())
+}
+
+model AdSlot {
+  id         String   @id @default(cuid())
+  videoId    String
+  video      Video    @relation(fields: [videoId], references: [id])
+  timestamp  Float    // Seconds into video
+  coordinates Json    // Stores the 9-point 3D BBox [x, y, z, roll, pitch, yaw...]
+  lighting   String?  // Kelvin temperature
+  isFilled   Boolean  @default(false)
+}

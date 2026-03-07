@@ -15,9 +15,10 @@ cloudinary>=1.41.0
 # Google Gemini
 google-genai>=1.0.0
 
-# Celery + Redis
+# Celery + Redis + Vultr Worker Nodes
 celery[redis]>=5.4.0
 redis>=5.2.0
+vultr-python>=1.0.0
 
 # CORS
 python-multipart>=0.0.18
