@@ -36,63 +36,63 @@ export default function LoginPage() {
                         inactiveZone={0.01}
                         borderWidth={2}
                     />
-                <div className="relative bg-gradient-to-b from-gray-900 to-black rounded-2xl p-8 shadow-2xl">
-                    <div className="text-center mb-8">
-                        <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-                        <p className="text-gray-400 text-sm">Sign in to continue to your dashboard</p>
-                    </div>
+                    <div className="relative bg-gradient-to-b from-gray-900 to-black rounded-2xl p-8 shadow-2xl">
+                        <div className="text-center mb-8">
+                            <h1 className="text-2xl font-bold text-white mb-2">Welcome Back</h1>
+                            <p className="text-gray-400 text-sm">Sign in to continue to your dashboard</p>
+                        </div>
 
-                    <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); window.location.href = '/dashboard'; }}>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">Email Address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                                <input
-                                    type="email"
-                                    className="w-full bg-black border border-gray-800 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl py-2.5 pl-10 pr-4 text-white placeholder-gray-600 outline-none transition-all"
-                                    placeholder="you@example.com"
-                                />
+                        <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); window.location.href = '/dashboard'; }}>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1.5">Email Address</label>
+                                <div className="relative">
+                                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                                    <input
+                                        type="email"
+                                        className="w-full bg-black border border-gray-800 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl py-2.5 pl-10 pr-4 text-white placeholder-gray-600 outline-none transition-all"
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-                                <input
-                                    type="password"
-                                    className="w-full bg-black border border-gray-800 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl py-2.5 pl-10 pr-4 text-white placeholder-gray-600 outline-none transition-all"
-                                    placeholder="••••••••"
-                                />
+                            <div>
+                                <label className="block text-sm font-medium text-gray-400 mb-1.5">Password</label>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                                    <input
+                                        type="password"
+                                        className="w-full bg-black border border-gray-800 focus:border-teal-500 focus:ring-1 focus:ring-teal-500 rounded-xl py-2.5 pl-10 pr-4 text-white placeholder-gray-600 outline-none transition-all"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
                             </div>
+
+                            <div className="flex items-center justify-between mt-2 mb-6">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" className="w-4 h-4 rounded bg-black border-gray-800 text-teal-500 focus:ring-teal-500/20" />
+                                    <span className="text-sm text-gray-400">Remember me</span>
+                                </label>
+                                <Link href="#" className="text-sm text-teal-400 hover:text-teal-300 transition-colors">
+                                    Forgot password?
+                                </Link>
+                            </div>
+
+                            <ShinyButton type="submit" className="w-full gap-2 transition-transform hover:scale-[1.02]">
+                                Sign In
+                                <ArrowRight className="w-4 h-4 ml-2" />
+                            </ShinyButton>
+                        </form>
+
+                        <div className="mt-6 text-center text-sm text-gray-500">
+                            Don't have an account? <Link href="#" className="text-teal-400 hover:text-teal-300">Sign up</Link>
                         </div>
 
-                        <div className="flex items-center justify-between mt-2 mb-6">
-                            <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" className="w-4 h-4 rounded bg-black border-gray-800 text-teal-500 focus:ring-teal-500/20" />
-                                <span className="text-sm text-gray-400">Remember me</span>
-                            </label>
-                            <Link href="#" className="text-sm text-teal-400 hover:text-teal-300 transition-colors">
-                                Forgot password?
-                            </Link>
+                        <div className="mt-6 pt-6 border-t border-gray-800">
+                            <a href="/auth/login" className="block w-full py-3 rounded-xl bg-gray-900 border border-gray-800 hover:border-teal-900 text-white font-medium text-center transition-all hover:bg-gray-800">
+                                Continue with Auth0 Single Sign-On
+                            </a>
                         </div>
-
-                        <ShinyButton type="submit" className="w-full gap-2 transition-transform hover:scale-[1.02]">
-                            Sign In
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                        </ShinyButton>
-                    </form>
-
-                    <div className="mt-6 text-center text-sm text-gray-500">
-                        Don't have an account? <Link href="#" className="text-teal-400 hover:text-teal-300">Sign up</Link>
                     </div>
-
-                    <div className="mt-6 pt-6 border-t border-gray-800">
-                        <a href="/api/auth/login" className="block w-full py-3 rounded-xl bg-gray-900 border border-gray-800 hover:border-teal-900 text-white font-medium text-center transition-all hover:bg-gray-800">
-                            Continue with Auth0 Single Sign-On
-                        </a>
-                    </div>
-                </div>
                 </div>
             </motion.div>
         </div>
