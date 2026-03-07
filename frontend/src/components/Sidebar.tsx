@@ -12,7 +12,7 @@ export function CustomSidebar() {
     const [open, setOpen] = useState(false);
 
     const navItems = [
-        { name: "Home", href: "/dashboard", icon: Home },
+        { name: "Home", href: "/", icon: Home },
         { name: "Video Library", href: "/library", icon: Library },
         { name: "Settings", href: "/settings", icon: Settings },
     ];
@@ -99,7 +99,7 @@ export function CustomSidebar() {
 function Logo({ open }: { open: boolean }) {
     return (
         <Link
-            href="/dashboard"
+            href="/"
             className="flex space-x-3 items-center text-sm py-1 relative z-20 outline-none mt-2 px-2"
         >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-black flex items-center justify-center p-[1px] flex-shrink-0">
