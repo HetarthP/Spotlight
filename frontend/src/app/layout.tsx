@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ChatPanel from "@/components/ChatPanel";
+import ChatNavLink from "@/components/ChatNavLink";
 
 export const metadata: Metadata = {
     title: "VPP — Virtual Product Placement",
@@ -31,12 +33,18 @@ export default function RootLayout({
                             <li>
                                 <a href="/brand">Brand</a>
                             </li>
+                            <li>
+                                <ChatNavLink />
+                            </li>
                         </ul>
                     </div>
                 </nav>
 
                 {/* ── Page Content ───────────────────────── */}
                 <main className="container page">{children}</main>
+
+                {/* ── Floating Chat Panel ────────────────── */}
+                <ChatPanel />
             </body>
         </html>
     );

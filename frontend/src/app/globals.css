@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 :root {
@@ -307,4 +311,255 @@ body {
 
 .justify-between {
   justify-content: space-between;
+}
+
+/* ── Chat ─────────────────────────────────────── */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  min-height: 400px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 0.875rem 1rem;
+  border-radius: var(--radius);
+  animation: chatFadeIn 0.3s ease;
+}
+
+@keyframes chatFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble-ai {
+  align-self: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.375rem;
+}
+
+.chat-bubble-role {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.chat-bubble-time {
+  font-size: 0.65rem;
+  opacity: 0.5;
+}
+
+.chat-bubble-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Typing indicator */
+.chat-typing {
+  display: flex;
+  gap: 4px;
+  padding: 0.25rem 0;
+}
+
+.chat-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: chatBounce 1.4s infinite ease-in-out both;
+}
+
+.chat-typing span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.chat-typing span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes chatBounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Error */
+.chat-error {
+  align-self: center;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+}
+
+/* Input row */
+.chat-input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+
+.chat-input {
+  flex: 1;
+  resize: none;
+  padding: 0.75rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  max-height: 120px;
+  line-height: 1.4;
+}
+
+.chat-input:focus {
+  border-color: var(--accent);
+}
+
+.chat-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.chat-send-btn {
+  height: 42px;
+  min-width: 72px;
+  flex-shrink: 0;
+}
+
+.chat-send-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── shadcn / Tailwind CSS Variables ─────────── */
+/* Prefixed with --tw- to avoid clashing with existing vanilla CSS vars */
+
+@layer base {
+  :root {
+    --tw-background: 0 0% 100%;
+    --tw-foreground: 222.2 84% 4.9%;
+    --tw-card: 0 0% 100%;
+    --tw-card-foreground: 222.2 84% 4.9%;
+    --tw-popover: 0 0% 100%;
+    --tw-popover-foreground: 222.2 84% 4.9%;
+    --tw-primary: 222.2 47.4% 11.2%;
+    --tw-primary-foreground: 210 40% 98%;
+    --tw-secondary: 210 40% 96.1%;
+    --tw-secondary-foreground: 222.2 47.4% 11.2%;
+    --tw-muted: 210 40% 96.1%;
+    --tw-muted-foreground: 215.4 16.3% 46.9%;
+    --tw-accent: 210 40% 96.1%;
+    --tw-accent-foreground: 222.2 47.4% 11.2%;
+    --tw-destructive: 0 84.2% 60.2%;
+    --tw-destructive-foreground: 210 40% 98%;
+    --tw-border: 214.3 31.8% 91.4%;
+    --tw-input: 214.3 31.8% 91.4%;
+    --tw-ring: 222.2 84% 4.9%;
+    --tw-radius: 0.5rem;
+    --tw-sidebar-background: 0 0% 98%;
+    --tw-sidebar-foreground: 240 5.3% 26.1%;
+    --tw-sidebar-primary: 240 5.9% 10%;
+    --tw-sidebar-primary-foreground: 0 0% 98%;
+    --tw-sidebar-accent: 240 4.8% 95.9%;
+    --tw-sidebar-accent-foreground: 240 5.9% 10%;
+    --tw-sidebar-border: 220 13% 91%;
+    --tw-sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --tw-background: 222.2 84% 4.9%;
+    --tw-foreground: 210 40% 98%;
+    --tw-card: 222.2 84% 4.9%;
+    --tw-card-foreground: 210 40% 98%;
+    --tw-popover: 222.2 84% 4.9%;
+    --tw-popover-foreground: 210 40% 98%;
+    --tw-primary: 210 40% 98%;
+    --tw-primary-foreground: 222.2 47.4% 11.2%;
+    --tw-secondary: 217.2 32.6% 17.5%;
+    --tw-secondary-foreground: 210 40% 98%;
+    --tw-muted: 217.2 32.6% 17.5%;
+    --tw-muted-foreground: 215 20.2% 65.1%;
+    --tw-accent: 217.2 32.6% 17.5%;
+    --tw-accent-foreground: 210 40% 98%;
+    --tw-destructive: 0 62.8% 30.6%;
+    --tw-destructive-foreground: 210 40% 98%;
+    --tw-border: 217.2 32.6% 17.5%;
+    --tw-input: 217.2 32.6% 17.5%;
+    --tw-ring: 212.7 26.8% 83.9%;
+    --tw-sidebar-background: 240 5.9% 10%;
+    --tw-sidebar-foreground: 240 4.8% 95.9%;
+    --tw-sidebar-primary: 224.3 76.3% 48%;
+    --tw-sidebar-primary-foreground: 0 0% 100%;
+    --tw-sidebar-accent: 240 3.7% 15.9%;
+    --tw-sidebar-accent-foreground: 240 4.8% 95.9%;
+    --tw-sidebar-border: 240 3.7% 15.9%;
+    --tw-sidebar-ring: 217.2 91.2% 59.8%;
+  }
 }

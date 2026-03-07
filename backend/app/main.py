@@ -11,7 +11,7 @@ from prisma import Prisma
 db = Prisma()
 
 from app.config import settings
-from app.routers import movies, videos, placements
+from app.routers import movies, videos, placements, chat
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -41,6 +41,7 @@ app.add_middleware(
 app.include_router(movies.router, prefix="/api/movies", tags=["Movies"])
 app.include_router(videos.router, prefix="/api/videos", tags=["Videos"])
 app.include_router(placements.router, prefix="/api/placements", tags=["Placements"])
+app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
 
 
 @app.get("/")
