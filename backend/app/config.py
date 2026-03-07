@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     backboard_api_key: str = ""
     backboard_project_id: str = ""
 
+    # ── Vultr ─────────────────────────────────
+    vultr_api_key: str = ""
+
     # ── Auth0 ─────────────────────────────────
     auth0_domain: str = ""
     auth0_audience: str = ""
