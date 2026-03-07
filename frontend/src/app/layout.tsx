@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ChatPanel from "@/components/ChatPanel";
-import ChatNavLink from "@/components/ChatNavLink";
 
 export const metadata: Metadata = {
     title: "VPP — Virtual Product Placement",
@@ -17,29 +16,6 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                {/* ── Navbar ─────────────────────────────── */}
-                <nav className="navbar">
-                    <div className="container">
-                        <a href="/" className="navbar-brand">
-                            ▶ VPP
-                        </a>
-                        <ul className="navbar-links">
-                            <li>
-                                <a href="/">Discover</a>
-                            </li>
-                            <li>
-                                <a href="/dashboard">Creator</a>
-                            </li>
-                            <li>
-                                <a href="/brand">Brand</a>
-                            </li>
-                            <li>
-                                <ChatNavLink />
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-
                 {/* ── Page Content ───────────────────────── */}
                 <main className="container page">{children}</main>
 

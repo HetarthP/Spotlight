@@ -22,13 +22,13 @@ export default function CreatePage() {
                             transition={{ duration: 0.5 }}
                         >
                             <h1 className="text-5xl lg:text-7xl font-black text-white tracking-tight mb-6 leading-tight">
-                                Create Your <br />
+                                Turn Your Videos Into <br />
                                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
-                                    AI-Powered Video
+                                    Brand Opportunities
                                 </span>
                             </h1>
                             <p className="text-xl text-gray-400 mb-10 max-w-xl mx-auto md:mx-0">
-                                Discover ad placement opportunities contextually mapped in 3D space. Start by uploading your footage.
+                                Scan your videos, detect ad slots, and promote your products in a dynamic marketplace.
                             </p>
                             <Link href="/select-video" className="inline-block w-full sm:w-auto">
                                 <ShinyButton className="px-8 gap-2 py-4 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all transform hover:scale-105 w-full sm:w-auto">

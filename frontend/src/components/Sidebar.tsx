@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from "./ui/sidebar";
-import { Sparkles, Home, Library, Settings, Plus } from "lucide-react";
+import { Sparkles, Home, Library, Settings, Plus, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -64,6 +64,27 @@ export function CustomSidebar() {
                                 />
                             );
                         })}
+                        {/* Custom Chat Button behaving like a SidebarLink */}
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                document.dispatchEvent(new Event("open-chat"));
+                            }}
+                            className="flex items-center justify-start gap-2 group/sidebar py-2 px-2 hover:bg-white/5 rounded-md transition-colors w-full"
+                        >
+                            <div className="flex items-center justify-center rounded-lg w-7 h-7 flex-shrink-0 transition-colors text-gray-400 group-hover/sidebar:text-white">
+                                <MessageCircle className="w-5 h-5" />
+                            </div>
+                            <motion.span
+                                animate={{
+                                    display: open ? "inline-block" : "none",
+                                    opacity: open ? 1 : 0,
+                                }}
+                                className="text-gray-300 group-hover/sidebar:text-white text-sm transition-colors whitespace-pre inline-block !p-0 !m-0"
+                            >
+                                Chat
+                            </motion.span>
+                        </button>
                     </div>
                 </div>
 
