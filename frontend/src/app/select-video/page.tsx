@@ -44,8 +44,21 @@ export default function SelectVideoPage() {
         }
     };
 
-    const handleUpload = (publicId: string) => {
-        // Automatically route to library or dashboard with the new video
+    const handleUpload = async (publicId: string, title?: string) => {
+        try {
+            // Try to tell the backend about this upload (non-blocking)
+            await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}/api/videos/ingest`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    imdb_id: publicId,
+                    cloudinary_public_id: publicId,
+                    title: title || "Custom Upload",
+                }),
+            }).catch(() => {}); // Don't block if backend is down
+        } catch {
+            // Ignore backend errors — we can still show the video
+        }
         router.push(`/dashboard?videoId=${publicId}`);
     };
 
