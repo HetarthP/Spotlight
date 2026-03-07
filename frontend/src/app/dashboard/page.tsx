@@ -12,10 +12,8 @@ import { Suspense, useEffect, useState, useCallback } from "react";
 import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
 
-/* ─── Configuration ───────────────────────────────────────────────── */
-
-// This is the hardcoded path to the secretly stored video
-const DEMO_RESULT_LOCAL_URL = "/assets/media/demo/0307.mp4";
+// This is the hardcoded path to the Cloudinary video
+const DEMO_RESULT_PUBLIC_ID = "Coke_results";
 
 const PIPELINE_STEPS = [
     {
@@ -171,14 +169,12 @@ function DashboardContent() {
                                         <span className="text-xs text-teal-500/60 uppercase tracking-wider font-semibold">AI Generated</span>
                                     </div>
                                     <div className="relative rounded-2xl overflow-hidden bg-black border border-teal-800/50 flex-1 shadow-[0_0_20px_rgba(20,184,166,0.15)] flex items-center justify-center">
-                                         {/* Local Hardcoded Video */}
-                                         <video 
-                                            controls
-                                            className="w-full h-auto object-cover max-h-[50vh]"
-                                            src={DEMO_RESULT_LOCAL_URL}
-                                            autoPlay
-                                            playsInline
-                                            controlsList="nodownload"
+                                         {/* Cloudinary Result Video */}
+                                         <CldVideoPlayer
+                                            id={`player-result-${DEMO_RESULT_PUBLIC_ID}`}
+                                            width="1920"
+                                            height="1080"
+                                            src={DEMO_RESULT_PUBLIC_ID}
                                          />
                                     </div>
                                 </div>
