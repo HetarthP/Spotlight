@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export default function HomePage() {
     return (
@@ -69,16 +70,16 @@ export default function HomePage() {
                     transition={{ duration: 0.5, delay: 0.3 }}
                     className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
                 >
-                    <Link href="/login" className="w-full sm:w-auto">
-                        <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all transform hover:scale-105">
+                    <Link href="/login" className="w-full sm:w-auto flex">
+                        <ShinyButton className="w-full sm:w-auto transition-transform hover:scale-105">
                             Get Started
-                        </button>
+                        </ShinyButton>
                     </Link>
-                    <Link href="/create" className="w-full sm:w-auto">
-                        <button className="w-full sm:w-auto px-8 py-4 rounded-xl bg-transparent border-2 border-teal-500/30 text-white hover:border-teal-400 hover:bg-teal-900/20 font-semibold flex items-center justify-center gap-2 transition-all">
+                    <Link href="/create" className="w-full sm:w-auto flex">
+                        <ShinyButton className="w-full sm:w-auto transition-transform hover:scale-105 gap-2">
                             Create a Project
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
+                            <ArrowRight className="w-5 h-5 ml-2" />
+                        </ShinyButton>
                     </Link>
                 </motion.div>
             </div>

@@ -3,8 +3,9 @@
 import { DashboardLayout } from "@/components/DashboardLayout";
 import ThreeBackground from "@/components/ThreeBackground";
 import { motion } from "framer-motion";
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { ArrowRight, PlayCircle, Upload } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { ShinyButton } from "@/components/ui/shiny-button";
 import Link from "next/link";
 
 export default function CreatePage() {
@@ -30,10 +31,10 @@ export default function CreatePage() {
                                 Discover ad placement opportunities contextually mapped in 3D space. Start by uploading your footage.
                             </p>
                             <Link href="/select-video" className="inline-block w-full sm:w-auto">
-                                <button className="px-8 flex items-center justify-center md:justify-start gap-2 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all transform hover:scale-105 border-0 w-full sm:w-auto">
+                                <ShinyButton className="px-8 gap-2 py-4 rounded-xl shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all transform hover:scale-105 w-full sm:w-auto">
+                                    <Upload className="w-4 h-4 mr-2" />
                                     Start Editing
-                                    <ArrowRight className="w-5 h-5" />
-                                </button>
+                                </ShinyButton>
                             </Link>
                         </motion.div>
                     </div>

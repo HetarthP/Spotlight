@@ -2,11 +2,12 @@
 
 import { useSearchParams } from "next/navigation";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import VideoPlayer from "@/components/VideoPlayer";
+import VideoPlayer from "@/components/ui/video-player";
 import Link from "next/link";
-import { Plus, Brain, BarChart3, ChevronRight, Video } from "lucide-react";
+import { Plus, Brain, BarChart3, ChevronRight, Video, FolderPlus } from "lucide-react";
 import { motion } from "framer-motion";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { ShinyButton } from "@/components/ui/shiny-button";
 import { Suspense } from "react";
 
 function DashboardContent() {
@@ -33,10 +34,10 @@ function DashboardContent() {
                     <h2 className="text-3xl font-bold text-white mb-4">No active project</h2>
                     <p className="text-gray-400 mb-8">Start by uploading a new video or selecting one from our catalog to detect ad placement slots.</p>
                     <Link href="/create">
-                        <button className="px-8 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(20,184,166,0.3)] transition-all transform hover:scale-105">
-                            <Plus className="w-5 h-5" />
+                        <ShinyButton className="transition-transform hover:scale-105 gap-2">
+                            <Plus className="w-5 h-5 mr-2" />
                             Create New Project
-                        </button>
+                        </ShinyButton>
                     </Link>
                 </motion.div>
             ) : (
@@ -61,8 +62,8 @@ function DashboardContent() {
                         {/* Video Player Section */}
                         <div className="lg:col-span-2 space-y-4">
                             <div className="bg-gray-900/50 border border-teal-900/30 rounded-2xl p-2 md:p-4 overflow-hidden shadow-2xl">
-                                <div className="relative aspect-video rounded-xl overflow-hidden bg-black border border-gray-800">
-                                    <VideoPlayer publicId={videoId} />
+                                <div className="relative rounded-xl overflow-hidden bg-black border border-gray-800">
+                                    <VideoPlayer src="https://videos.pexels.com/video-files/30333849/13003128_2560_1440_25fps.mp4" />
                                 </div>
                             </div>
                         </div>
@@ -86,10 +87,10 @@ function DashboardContent() {
                                     <p className="text-sm text-gray-400 mb-6">
                                         Use our Gemini-powered vision model to automatically scan this video for optimal 3D ad placement slots.
                                     </p>
-                                    <button className="w-full py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(20,184,166,0.2)] transition-all transform hover:scale-[1.02]">
-                                        <Brain className="w-4 h-4" />
+                                    <ShinyButton className="w-full transition-transform hover:scale-105">
+                                        <Brain className="w-4 h-4 mr-2" />
                                         Detect Ad Slots
-                                    </button>
+                                    </ShinyButton>
                                 </div>
                             </div>
 
@@ -110,9 +111,10 @@ function DashboardContent() {
                                     <p className="text-sm text-gray-500 mb-6">
                                         View the generated placement map to fine-tune the scale and mapping of inserted brands.
                                     </p>
-                                    <button className="w-full py-3 rounded-xl bg-transparent border-2 border-gray-800 text-gray-300 hover:text-white hover:border-teal-500/50 hover:bg-teal-900/10 font-semibold flex items-center justify-center gap-2 transition-all">
-                                        View Placement Map
-                                    </button>
+                                    <ShinyButton className="w-full">
+                                    <FolderPlus className="w-4 h-4 mr-2" />
+                                    New Project
+                                </ShinyButton>
                                 </div>
                             </div>
                         </div>

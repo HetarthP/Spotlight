@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Sparkles, Mail, Lock, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { ShinyButton } from "@/components/ui/shiny-button";
 
 export default function LoginPage() {
     return (
@@ -76,10 +77,10 @@ export default function LoginPage() {
                             </Link>
                         </div>
 
-                        <button type="submit" className="w-full py-3 rounded-xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(20,184,166,0.2)] transition-all transform hover:scale-[1.02]">
+                        <ShinyButton type="submit" className="w-full gap-2 transition-transform hover:scale-[1.02]">
                             Sign In
-                            <ArrowRight className="w-4 h-4" />
-                        </button>
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                        </ShinyButton>
                     </form>
 
                     <div className="mt-6 text-center text-sm text-gray-500">

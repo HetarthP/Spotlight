@@ -1,7 +1,7 @@
 "use client";
 
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { BackgroundPaths } from "@/components/ui/background-paths";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { FolderKanban, CheckCircle2, Clock, PlayCircle, MoreVertical } from "lucide-react";
 import { motion } from "framer-motion";
@@ -26,7 +26,22 @@ export default function LibraryPage() {
     return (
         <DashboardLayout>
             <div className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col">
-                <BackgroundPaths />
+                <div className="absolute inset-0 z-0">
+                    <BackgroundGradientAnimation
+                        gradientBackgroundStart="rgb(0, 0, 0)"
+                        gradientBackgroundEnd="rgb(0, 20, 20)"
+                        firstColor="13, 148, 136"
+                        secondColor="20, 184, 166"
+                        thirdColor="45, 212, 191"
+                        fourthColor="15, 118, 110"
+                        fifthColor="94, 234, 212"
+                        pointerColor="20, 184, 166"
+                        size="70%"
+                        blendingValue="hard-light"
+                        interactive={false}
+                        containerClassName="absolute inset-0 opacity-40"
+                    />
+                </div>
                 <div className="relative z-10 p-8 max-w-7xl mx-auto w-full flex-1">
                     <div className="mb-10">
                         <h1 className="text-3xl font-bold text-white mb-2">Video Library</h1>
