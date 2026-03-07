@@ -1,0 +1,172 @@
+// Prisma Schema — VPP Database
+// PostgreSQL via Prisma ORM
+// Run: npx prisma generate && npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Users ────────────────────────────────────
+
+model User {
+  id        Int      @id @default(autoincrement())
+  auth0Id   String   @unique @map("auth0_id")
+  email     String   @unique
+  name      String?
+  role      Role     @default(CREATOR)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  videos     Video[]
+  brands     Brand[]
+
+  @@map("users")
+}
+
+enum Role {
+  CREATOR
+  BRAND
+  ADMIN
+}
+
+// ── Movies (OMDb Index) ──────────────────────
+
+model Movie {
+  id       Int      @id @default(autoincrement())
+  imdbId   String   @unique @map("imdb_id")
+  title    String
+  year     String
+  genre    String?
+  poster   String?  // OMDb poster URL
+  plot     String?
+
+  videos   Video[]
+
+  @@map("movies")
+}
+
+// ── Videos (Cloudinary Assets) ───────────────
+
+model Video {
+  id                  Int      @id @default(autoincrement())
+  cloudinaryPublicId  String   @unique @map("cloudinary_public_id")
+  status              String   @default("uploaded") // uploaded | processing | ready
+  createdAt           DateTime @default(now()) @map("created_at")
+
+  movieId  Int?   @map("movie_id")
+  movie    Movie? @relation(fields: [movieId], references: [id])
+
+  userId   Int?   @map("user_id")
+  user     User?  @relation(fields: [userId], references: [id])
+
+  adSlots     AdSlot[]
+  placements  Placement[]
+
+  @@map("videos")
+}
+
+// ── Ad Slots (3D Bounding Boxes) ─────────────
+
+model AdSlot {
+  id          Int    @id @default(autoincrement())
+  frameNumber Int    @map("frame_number")
+
+  // 9-point 3D bounding box
+  x     Float
+  y     Float
+  z     Float
+  w     Float  // width
+  h     Float  // height
+  d     Float  // depth
+  roll  Float
+  pitch Float
+  yaw   Float
+
+  // Environmental metadata
+  kelvin         Int?
+  shadowDir      String? @map("shadow_direction")
+  sceneIntent    String? @map("scene_intent")
+
+  videoId Int   @map("video_id")
+  video   Video @relation(fields: [videoId], references: [id])
+
+  placements Placement[]
+
+  @@map("ad_slots")
+}
+
+// ── Brands ───────────────────────────────────
+
+model Brand {
+  id             Int      @id @default(autoincrement())
+  name           String
+  logoPublicId   String?  @map("logo_public_id")
+
+  ownerId  Int?  @map("owner_id")
+  owner    User? @relation(fields: [ownerId], references: [id])
+
+  assets     BrandAsset[]
+  placements Placement[]
+
+  @@map("brands")
+}
+
+model BrandAsset {
+  id              Int    @id @default(autoincrement())
+  publicId        String @map("public_id")   // Cloudinary public_id
+  label           String?
+  category        String?
+
+  brandId Int   @map("brand_id")
+  brand   Brand @relation(fields: [brandId], references: [id])
+
+  placements Placement[]
+
+  @@map("brand_assets")
+}
+
+// ── Placements (Ad Slot ↔ Brand Asset) ───────
+
+model Placement {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  videoId      Int        @map("video_id")
+  video        Video      @relation(fields: [videoId], references: [id])
+
+  adSlotId     Int        @map("ad_slot_id")
+  adSlot       AdSlot     @relation(fields: [adSlotId], references: [id])
+
+  brandId      Int        @map("brand_id")
+  brand        Brand      @relation(fields: [brandId], references: [id])
+
+  brandAssetId Int        @map("brand_asset_id")
+  brandAsset   BrandAsset @relation(fields: [brandAssetId], references: [id])
+
+  // VFX composition URL
+  compositeUrl String?    @map("composite_url")
+
+  events PlacementEvent[]
+
+  @@map("placements")
+}
+
+// ── Analytics Events ─────────────────────────
+
+model PlacementEvent {
+  id          Int      @id @default(autoincrement())
+  eventType   String   @map("event_type") // impression | hover | click
+  timestampMs Int      @map("timestamp_ms")
+  viewerId    String?  @map("viewer_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  placementId Int       @map("placement_id")
+  placement   Placement @relation(fields: [placementId], references: [id])
+
+  @@map("placement_events")
+}

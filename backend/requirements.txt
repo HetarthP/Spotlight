@@ -1,0 +1,27 @@
+# Backend — FastAPI + Celery
+
+# API
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pydantic>=2.10.0
+pydantic-settings>=2.7.0
+
+# HTTP clients
+httpx>=0.28.0
+
+# Cloudinary
+cloudinary>=1.41.0
+
+# Google Gemini
+google-genai>=1.0.0
+
+# Celery + Redis
+celery[redis]>=5.4.0
+redis>=5.2.0
+
+# CORS
+python-multipart>=0.0.18
+
+# Database (async optional)
+psycopg2-binary>=2.9.10
+sqlalchemy>=2.0.36
