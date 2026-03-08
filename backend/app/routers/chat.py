@@ -65,7 +65,14 @@ def _build_system_prompt(profile: dict) -> str:
         f"{brand_ctx}\n\n"
         "You have persistent memory across sessions. Facts you learn are saved automatically. "
         "Give concise, actionable VPP advice: content targeting, placement strategy, "
-        "budget allocation, and expected metrics. Use markdown."
+        "budget allocation, and expected metrics. Use markdown.\n\n"
+        "PRODUCT TRACKING: When the user asks you to add, track, or create a product or project, "
+        "you MUST include this exact tag on its own line at the very end of your response "
+        "(it will be stripped before the user sees it):\n"
+        '[ADD_PRODUCT] {{"name": "Product Name", "cost": "$X", "plan": "Marketing plan description", "status": "active"}}\n'
+        "Fill in all four fields based on what the user said. "
+        "If they don't specify cost, use \"Not specified\". "
+        "If they don't specify a plan, infer one from context."
     )
 
 
@@ -83,9 +90,25 @@ async def get_optional_user(
         return None
 
 
-async def _strip_product_tags(reply: str) -> str:
-    """Strip any [ADD_PRODUCT] tags from the AI reply (cosmetic only, no saving)."""
-    return ADD_PRODUCT_PATTERN.sub("", reply).strip()
+async def _extract_products_from_reply(reply: str, assistant_id: str) -> tuple[str, int]:
+    """
+    Scan the AI reply for [ADD_PRODUCT] JSON blocks.
+    Save each as a [PRODUCT] memory (with dedup) and strip from response.
+    """
+    matches = ADD_PRODUCT_PATTERN.findall(reply)
+    count = 0
+    for raw_json in matches:
+        try:
+            data = json.loads(raw_json)
+            name = data.get("name", "")
+            if name and not await _product_name_exists(assistant_id, name):
+                content = f"{PRODUCT_TAG}{json.dumps(data)}"
+                await backboard.add_memory(assistant_id, content)
+                count += 1
+        except (json.JSONDecodeError, Exception):
+            pass
+    cleaned = ADD_PRODUCT_PATTERN.sub("", reply).strip()
+    return cleaned, count
 
 
 async def _product_name_exists(assistant_id: str, name: str) -> bool:
@@ -113,31 +136,55 @@ def _extract_product_from_message(message: str) -> dict | None:
     if not _ADD_INTENT_WORDS.search(message):
         return None
 
-    # Extract name: text after 'called/named' up to 'costing/with/budget/$'
+    # Extract name: text in quotes, or after 'called/named', or after 'product/project'
     name_match = re.search(
-        r'(?:called|named)\s+["\']?(.+?)(?:\s+(?:costing|with|budget|for)\b|\s*\$|["\']|\.|$)',
+        r'(?:called|named)\s+["\']?(.+?)(?:\s+(?:costing|with|budget|for)\b|\s*\$|\s+\d{3,}|["\']|\.|$)',
         message, re.I
     )
     if not name_match:
-        # Fallback: text after 'product/project' up to cost/plan markers
         name_match = re.search(
-            r'(?:product|project)\s+["\']?(.+?)(?:\s+(?:costing|with|budget|for)\b|\s*\$|["\']|\.|$)',
+            r'(?:product|project)\s+["\']?(.+?)(?:\s+(?:costing|with|budget|for)\b|\s*\$|\s+\d{3,}|["\']|\.|$)',
             message, re.I
         )
     name = name_match.group(1).strip() if name_match else None
     if not name or len(name) < 2:
         return None
 
-    # Extract cost
+    # Extract cost: match $X,XXX or plain numbers (1000+)
     cost_match = re.search(r'\$[\d,]+(?:\.\d{2})?(?:k|K)?', message)
-    cost = cost_match.group(0) if cost_match else "Not specified"
+    if not cost_match:
+        cost_match = re.search(r'\b(\d{3,}(?:,\d{3})*(?:\.\d{2})?)\b', message)
+    if cost_match:
+        raw = cost_match.group(0)
+        cost = raw if raw.startswith('$') else f"${raw}"
+    else:
+        cost = "Not specified"
 
-    # Extract plan: text after 'with a/an' up to end of sentence
-    plan_match = re.search(r'with (?:a |an )?(.+?)(?:\.|$)', message, re.I)
-    plan_text = plan_match.group(1).strip().rstrip('.') if plan_match else "General marketing"
-    # Remove cost info from plan text if it leaked in
+    # Extract plan: text between the product name and the cost/number,
+    # OR after 'with a/an', OR descriptive text before 'and'
+    remaining = message
+    if name_match:
+        remaining = message[name_match.end():]
+    # Clean up remaining: strip quotes, leading whitespace
+    remaining = re.sub(r'^[\s"\']+', '', remaining)
+
+    plan_text = "General marketing"
+    # Try: text after 'with a/an'
+    plan_match = re.search(r'with (?:a |an )?(.+?)(?:\s+and\s+\d|\s*\$|\.|$)', remaining, re.I)
+    if plan_match and len(plan_match.group(1).strip()) > 3:
+        plan_text = plan_match.group(1).strip()
+    else:
+        # Grab descriptive words (anything that's not a number or 'and <number>')
+        desc = re.sub(r'\b\d[\d,]*\b', '', remaining)  # remove numbers
+        desc = re.sub(r'\band\s*$', '', desc).strip()   # remove trailing 'and'
+        desc = desc.strip(' ,.')
+        if len(desc) > 3:
+            plan_text = desc
+
+    # Clean cost info that may have leaked into plan
     plan_text = re.sub(r'\$[\d,]+(?:\.\d{2})?(?:k|K)?\s*(?:budget)?', '', plan_text).strip()
-    if not plan_text:
+    plan_text = re.sub(r'\b\d{3,}\b', '', plan_text).strip(' ,.')
+    if not plan_text or len(plan_text) < 3:
         plan_text = "General marketing"
 
     return {"name": name, "cost": cost, "plan": plan_text, "status": "active"}
@@ -164,17 +211,18 @@ async def chat(
         memory_mode = "Auto" if is_authenticated else "Off"
         reply = await backboard.send_message(thread_id, body.message, memory=memory_mode)
 
-        # Strip any [ADD_PRODUCT] tags from the visible reply
-        reply = await _strip_product_tags(reply)
-
-        # Only one product-creation path: parse the user's message
+        # Primary: extract products from the AI reply (AI returns structured tags)
         products_added = 0
         if is_authenticated:
+            reply, products_added = await _extract_products_from_reply(reply, assistant_id)
+        else:
+            reply = ADD_PRODUCT_PATTERN.sub("", reply).strip()
+
+        # Fallback: if AI didn't emit tags, parse user's message
+        if products_added == 0 and is_authenticated:
             product_data = _extract_product_from_message(body.message)
             if product_data:
-                # Dedup: skip if same product name already exists
-                already_exists = await _product_name_exists(assistant_id, product_data["name"])
-                if not already_exists:
+                if not await _product_name_exists(assistant_id, product_data["name"]):
                     try:
                         content = f"{PRODUCT_TAG}{json.dumps(product_data)}"
                         await backboard.add_memory(assistant_id, content)
