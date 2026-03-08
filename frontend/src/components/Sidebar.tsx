@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink, useSidebar } from "./ui/sidebar";
-import { Sparkles, Home, Library, Settings, Plus, MessageCircle, LogOut } from "lucide-react";
+import { Sparkles, Home, Library, Settings, Plus, MessageCircle, LogOut, BarChart2 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -14,6 +14,7 @@ export function CustomSidebar() {
     const navItems = [
         { name: "Home", href: "/", icon: Home },
         { name: "Video Library", href: "/library", icon: Library },
+        { name: "Analytics", href: "/dashboard/analytics", icon: BarChart2 },
     ];
 
     return (
