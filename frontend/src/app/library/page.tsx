@@ -41,12 +41,12 @@ export default function LibraryPage() {
     ];
 
     const projects = [
-        { id: 1, title: "Espresso Scene Diagnostic", duration: "9:37", status: "completed", thumbnail: "/coffee.jpg", date: "Oct 24, 2024" },
-        { id: 2, title: "Summer Campaign 2024", duration: "02:45", status: "completed", thumbnail: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800", date: "Oct 22, 2024" },
-        { id: 3, title: "Product Launch Teaser", duration: "01:15", status: "processing", thumbnail: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=800", date: "Oct 20, 2024" },
-        { id: 4, title: "Social Media Ad V2", duration: "00:30", status: "completed", thumbnail: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&q=80&w=800", date: "Oct 18, 2024" },
-        { id: 5, title: "Internal Training Q3", duration: "12:20", status: "completed", thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800", date: "Oct 15, 2024" },
-        { id: 6, title: "Holiday Promo Concept", duration: "03:10", status: "processing", thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800", date: "Oct 10, 2024" },
+        { id: "espresso", title: "Espresso Scene Diagnostic", duration: "9:37", status: "completed", thumbnail: "/coffee.jpg", date: "Oct 24, 2024" },
+        { id: "summer-campaign-2024", title: "Summer Campaign 2024", duration: "02:45", status: "completed", thumbnail: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=800", date: "Oct 22, 2024" },
+        { id: "product-launch-teaser", title: "Product Launch Teaser", duration: "01:15", status: "processing", thumbnail: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3?auto=format&fit=crop&q=80&w=800", date: "Oct 20, 2024" },
+        { id: "social-media-ad-v2", title: "Social Media Ad V2", duration: "00:30", status: "completed", thumbnail: "https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&q=80&w=800", date: "Oct 18, 2024" },
+        { id: "internal-training-q3", title: "Internal Training Q3", duration: "12:20", status: "completed", thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800", date: "Oct 15, 2024" },
+        { id: "holiday-promo-concept", title: "Holiday Promo Concept", duration: "03:10", status: "processing", thumbnail: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800", date: "Oct 10, 2024" },
     ];
 
     const updateProduct = async () => {
