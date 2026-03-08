@@ -88,41 +88,27 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
 
   return (
     <div
-      className={`w-full mx-auto ${containerHeight} overflow-hidden flex flex-col`}
+      className={`w-full mx-auto ${containerHeight} overflow-hidden flex flex-col backdrop-blur-xl bg-black/60 border border-teal-900/30 shadow-[0_0_40px_rgba(20,184,166,0.1)]`}
       style={{
-        background: "linear-gradient(135deg, var(--bg-secondary), var(--bg-card))",
-        borderRadius: mode === "panel" ? "0" : "var(--radius)",
-        border: "1px solid var(--border)",
+        borderRadius: mode === "panel" ? "0" : "1rem",
       }}
     >
       {/* Header */}
       <div
-        className="p-4 flex justify-between items-center shrink-0"
-        style={{
-          background: "rgba(108, 99, 255, 0.15)",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid var(--border)",
-        }}
+        className="p-4 flex justify-between items-center shrink-0 border-b border-teal-900/30 bg-black/40"
       >
         <div className="flex items-center space-x-2">
-          <Sparkles className="h-5 w-5" style={{ color: "var(--accent)" }} />
-          <h2 className="font-medium" style={{ color: "var(--text-primary)" }}>
-            Ghost-Merchant AI
+          <Sparkles className="h-5 w-5 text-teal-400" />
+          <h2 className="font-semibold text-white tracking-wide">
+            Spotlight AI
           </h2>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 text-gray-400">
           {mode === "panel" && (
             <a
               href="/brand/chat"
-              className="transition-colors"
+              className="transition-colors hover:text-white p-1"
               title="Open full page"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
             >
               <Maximize2 className="h-4 w-4" />
             </a>
@@ -130,14 +116,7 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
           {mode === "page" && (
             <button
               onClick={clearChat}
-              className="text-xs uppercase tracking-wide transition-colors"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
+              className="text-xs uppercase tracking-wide transition-colors hover:text-white px-2 py-1"
             >
               Clear
             </button>
@@ -145,14 +124,7 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
           {mode === "panel" && onClose && (
             <button
               onClick={onClose}
-              className="transition-colors"
-              style={{ color: "var(--text-secondary)" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.color = "var(--text-primary)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.color = "var(--text-secondary)")
-              }
+              className="transition-colors hover:text-white p-1"
             >
               <X className="h-4 w-4" />
             </button>
@@ -161,26 +133,14 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
       </div>
 
       {/* Messages container */}
-      <div
-        className="flex-1 p-4 overflow-y-auto"
-        style={{ background: "rgba(10, 10, 15, 0.5)" }}
-      >
+      <div className="flex-1 p-4 overflow-y-auto no-scrollbar relative min-h-0">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center">
-            <Sparkles
-              className="h-12 w-12 mb-4"
-              style={{ color: "var(--accent)" }}
-            />
-            <h3
-              className="text-xl mb-2"
-              style={{ color: "var(--text-primary)" }}
-            >
+            <Sparkles className="h-12 w-12 mb-4 text-teal-500 opacity-80" />
+            <h3 className="text-xl mb-2 text-white font-medium">
               How can I help you today?
             </h3>
-            <p
-              className="text-sm max-w-xs"
-              style={{ color: "var(--text-secondary)" }}
-            >
+            <p className="text-sm max-w-xs text-gray-400">
               Ask me about VPP strategy, budget allocation, or campaign
               planning. I already know your brand profile!
             </p>
@@ -193,25 +153,13 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
                 className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className="max-w-[85%] p-3.5 animate-fade-in"
-                  style={{
-                    borderRadius: "var(--radius)",
-                    ...(msg.isUser
-                      ? {
-                          background: "var(--accent)",
-                          color: "#fff",
-                          borderTopRightRadius: "4px",
-                          boxShadow: "0 4px 16px var(--accent-glow)",
-                        }
-                      : {
-                          background: "var(--bg-card)",
-                          color: "var(--text-primary)",
-                          borderTopLeftRadius: "4px",
-                          border: "1px solid var(--border)",
-                        }),
-                  }}
+                  className={`max-w-[85%] p-3.5 animate-fade-in ${
+                    msg.isUser
+                      ? "bg-teal-600/20 border border-teal-500/30 text-white rounded-2xl rounded-tr-sm shadow-[0_0_15px_rgba(20,184,166,0.15)]"
+                      : "bg-gray-900/60 border border-teal-900/40 text-gray-200 rounded-2xl rounded-tl-sm backdrop-blur-md"
+                  }`}
                 >
-                  <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
+                  <p className="text-[14px] leading-relaxed whitespace-pre-wrap">
                     {msg.text}
                   </p>
                 </div>
@@ -219,34 +167,11 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div
-                  className="max-w-[80%] p-3"
-                  style={{
-                    borderRadius: "var(--radius)",
-                    borderTopLeftRadius: "4px",
-                    background: "var(--bg-card)",
-                    border: "1px solid var(--border)",
-                  }}
-                >
+                <div className="max-w-[80%] p-4 bg-gray-900/60 border border-teal-900/40 rounded-2xl rounded-tl-sm backdrop-blur-md">
                   <div className="flex items-center space-x-2">
-                    <div
-                      className="w-2 h-2 rounded-full animate-pulse"
-                      style={{ background: "var(--accent)" }}
-                    />
-                    <div
-                      className="w-2 h-2 rounded-full animate-pulse"
-                      style={{
-                        background: "var(--accent)",
-                        animationDelay: "0.2s",
-                      }}
-                    />
-                    <div
-                      className="w-2 h-2 rounded-full animate-pulse"
-                      style={{
-                        background: "var(--accent)",
-                        animationDelay: "0.4s",
-                      }}
-                    />
+                    <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" />
+                    <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                    <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse" style={{ animationDelay: "0.4s" }} />
                   </div>
                 </div>
               </div>
@@ -259,13 +184,7 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
       {/* Input form */}
       <form
         onSubmit={handleSubmit}
-        className="p-4 transition-colors duration-200 shrink-0"
-        style={{
-          borderTop: `1px solid ${isFocused ? "var(--accent)" : "var(--border)"}`,
-          background: isFocused
-            ? "rgba(26, 26, 46, 0.8)"
-            : "var(--bg-primary)",
-        }}
+        className={`p-4 transition-colors duration-200 shrink-0 border-t ${isFocused ? "border-teal-500/50 bg-black/80" : "border-teal-900/30 bg-black/40"} backdrop-blur-md`}
       >
         <div className="relative flex items-center">
           <input
@@ -275,14 +194,7 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder="Type your message..."
-            className="w-full py-3 pl-4 pr-12 focus:outline-none"
-            style={{
-              background: "var(--bg-secondary)",
-              border: "1px solid var(--border)",
-              borderRadius: "9999px",
-              color: "var(--text-primary)",
-              fontSize: "0.875rem",
-            }}
+            className="w-full py-3.5 pl-5 pr-12 focus:outline-none bg-gray-900/50 border border-gray-800 focus:border-teal-500/50 rounded-full text-white text-sm transition-colors shadow-inner"
             disabled={isTyping}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -294,24 +206,16 @@ const AIAssistant = ({ mode = "page", onClose }: AIAssistantProps) => {
           <button
             type="submit"
             disabled={input.trim() === "" || isTyping}
-            className="absolute right-1 rounded-full p-2 transition-colors"
-            style={{
-              background:
-                input.trim() === "" || isTyping
-                  ? "var(--bg-card)"
-                  : "var(--accent)",
-              color:
-                input.trim() === "" || isTyping
-                  ? "var(--text-secondary)"
-                  : "#fff",
-              cursor:
-                input.trim() === "" || isTyping ? "not-allowed" : "pointer",
-            }}
+            className={`absolute right-1.5 rounded-full p-2.5 transition-all outline-none ${
+              input.trim() === "" || isTyping
+                ? "text-gray-600 bg-transparent cursor-not-allowed"
+                : "text-white bg-teal-600 hover:bg-teal-500 hover:shadow-[0_0_15px_rgba(20,184,166,0.4)]"
+            }`}
           >
             {isTyping ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin text-teal-500" />
             ) : (
-              <Send className="h-5 w-5" />
+              <Send className={`h-4 w-4 ${input.trim() === "" || isTyping ? "ml-[-2px]" : "ml-[-2px] mt-[1px]"}`} />
             )}
           </button>
         </div>

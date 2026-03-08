@@ -113,7 +113,7 @@ export default function SelectVideoPage() {
 
                         {/* Catalog Card */}
                         <div
-                            onClick={() => setSelection("catalog")}
+                            onClick={() => router.push("/catalog")}
                             className="bg-gradient-to-b from-gray-900 to-black border border-teal-900/30 hover:border-teal-500/40 rounded-2xl p-10 cursor-pointer group transition-all transform hover:-translate-y-2 hover:shadow-[0_10px_40px_rgba(20,184,166,0.1)] flex flex-col items-center text-center"
                         >
                             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center mb-6 shadow-lg group-hover:shadow-[0_0_20px_rgba(20,184,166,0.5)] transition-shadow">

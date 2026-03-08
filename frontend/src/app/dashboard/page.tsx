@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState, useCallback } from "react";
 import { CldVideoPlayer } from "next-cloudinary";
 import "next-cloudinary/dist/cld-video-player.css";
+import { AnimatedText } from "@/components/ui/animated-shiny-text";
+import { LampContainer } from "@/components/ui/lamp";
 
 // This is the hardcoded path to the Cloudinary video
 const DEMO_RESULT_PUBLIC_ID = "Demo1_Results_gldni4";
@@ -18,19 +20,19 @@ const DEMO_RESULT_PUBLIC_ID = "Demo1_Results_gldni4";
 const PIPELINE_STEPS = [
     {
         id: "analyzing",
-        title: "Analyzing with Gemini 2.5 Flash",
+        title: "Analyzing",
         description: "Scanning video frames for natural scene breaks and optimal insertion points.",
         duration: 3500,
     },
     {
         id: "generating",
-        title: "Generating with WaveSpeed AI",
+        title: "Generating",
         description: "Extending the best 1-second source clip into a branded 5-second placement.",
         duration: 4000,
     },
     {
         id: "rendering",
-        title: "Rendering with Cloudinary fl_splice",
+        title: "Rendering",
         description: "Stitching original footage and AI-generated content into a seamless output.",
         duration: 3500,
     },
@@ -83,10 +85,10 @@ function DashboardContent() {
 
     return (
         <div className="p-8 max-w-7xl mx-auto min-h-[calc(100vh-4rem)] flex flex-col items-center">
-            <div className="w-full flex items-center gap-2 text-sm text-gray-500 mb-8 max-w-5xl">
+            <div className="relative z-[100] w-full flex items-center gap-2 text-sm text-gray-500 mb-8 max-w-5xl">
                 <Link href="/library" className="hover:text-white transition-colors">Library</Link>
-                <ChevronRight className="w-4 h-4" />
-                <span className="text-teal-400">Current Project</span>
+                <ChevronRight className="w-4 h-4 text-gray-600" />
+                <span className="text-teal-400 font-medium">Current Project</span>
             </div>
 
             {!videoId ? (
@@ -116,31 +118,35 @@ function DashboardContent() {
                     className="w-full max-w-5xl space-y-8"
                 >
                     {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-center sm:text-left">
-                        <div>
-                            <h1 className="text-3xl font-bold text-white mb-2">
-                                {pipelineComplete ? "AdSwap Complete" : "Project Processing"}
-                            </h1>
-                            <p className="text-gray-400 max-w-2xl">
-                                {pipelineComplete
-                                    ? "✅ AI analysis and video synthesis complete. Compare the original and generated version below."
-                                    : "Our AI is analyzing the footage and synthesizing the product placement..."}
-                            </p>
+                    {!pipelineComplete && (
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-center sm:text-left">
+                            <div className="flex-1 w-full max-w-[100%] overflow-hidden">
+                                <h1 className="text-3xl font-bold text-white mb-2">
+                                    Project Processing
+                                </h1>
+                                <p className="text-gray-400 max-w-2xl">
+                                    Our AI is analyzing the footage and synthesizing the product placement...
+                                </p>
+                            </div>
+                            {pipelineActive && (
+                                <span className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold flex items-center gap-2 shrink-0">
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                    Processing...
+                                </span>
+                            )}
                         </div>
-                        {pipelineActive && (
-                            <span className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-semibold flex items-center gap-2 shrink-0">
-                                <Loader2 className="w-4 h-4 animate-spin" />
-                                Processing...
-                            </span>
-                        )}
-                        {pipelineComplete && (
-                            <span className="px-4 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-semibold flex items-center gap-2 shrink-0">
-                                <CheckCircle2 className="w-4 h-4" />
-                                Ready
-                            </span>
-                        )}
-                    </div>
+                    )}
 
+                    {pipelineComplete && (
+                        <AnimatedText 
+                            text="Giving your brand the Spotlight." 
+                            textClassName="text-[2.5rem] md:text-[4rem] font-bold tracking-tight text-center leading-tight z-50 relative"
+                            gradientColors="linear-gradient(90deg, #F8FAFC, #2DD4BF, #F8FAFC)"
+                            className="mt-8 mb-4 w-full flex justify-center !items-center"
+                        />
+                    )}
+
+                    <LampContainer className="pt-20 mt-[-8rem]" isOn={pipelineComplete}>
                     <div className="flex flex-col gap-8 w-full">
                         {/* Video Display Section */}
                         {pipelineComplete ? (
@@ -166,7 +172,7 @@ function DashboardContent() {
                                         <h3 className="text-teal-400 font-bold text-base flex items-center gap-2">
                                             <Sparkles className="w-4 h-4" /> Synthesized Result
                                         </h3>
-                                        <span className="text-xs text-teal-500/60 uppercase tracking-wider font-semibold">AI Generated</span>
+                                        <span className="text-xs text-teal-500/60 uppercase tracking-wider font-semibold">Branded</span>
                                     </div>
                                     <div className="relative rounded-2xl overflow-hidden bg-black border border-teal-800/50 flex-1 shadow-[0_0_20px_rgba(20,184,166,0.15)] flex items-center justify-center">
                                          {/* Cloudinary Result Video */}
@@ -210,10 +216,7 @@ function DashboardContent() {
                                     className="bg-gray-900/50 border border-gray-800 rounded-3xl p-8 max-w-4xl w-full mx-auto"
                                 >
                                     <div className="flex items-center justify-between mb-6">
-                                        <div>
-                                            <h2 className="text-xl font-bold text-white">AdSwap Pipeline</h2>
-                                            <p className="text-sm text-gray-500 mt-1">Real-time processing via Gemini, WaveSpeed & Cloudinary</p>
-                                        </div>
+                                        <h2 className="text-xl font-bold text-white">Spotlight</h2>
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         {PIPELINE_STEPS.map((step, index) => {
@@ -272,6 +275,7 @@ function DashboardContent() {
                              </motion.div>
                         )}
                     </div>
+                    </LampContainer>
                 </motion.div>
             )}
             

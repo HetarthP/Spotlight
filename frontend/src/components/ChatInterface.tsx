@@ -17,7 +17,7 @@ export default function ChatInterface() {
             id: "welcome",
             role: "assistant",
             content:
-                "👋 Welcome to Ghost-Merchant! I'm your AI marketing strategist. " +
+                "👋 Welcome to Spotlight AI! I'm your AI marketing strategist. " +
                 "I already know your brand profile — ask me anything about VPP strategy, " +
                 "budget allocation, or campaign planning.",
             timestamp: new Date(),
@@ -124,7 +124,7 @@ export default function ChatInterface() {
                     >
                         <div className="chat-bubble-header">
                             <span className="chat-bubble-role">
-                                {msg.role === "user" ? "You" : "🤖 Ghost-Merchant"}
+                                {msg.role === "user" ? "You" : "🤖 Spotlight AI"}
                             </span>
                             <span className="chat-bubble-time">
                                 {msg.timestamp.toLocaleTimeString([], {
@@ -141,7 +141,7 @@ export default function ChatInterface() {
                     <div className="chat-bubble chat-bubble-ai">
                         <div className="chat-bubble-header">
                             <span className="chat-bubble-role">
-                                🤖 Ghost-Merchant
+                                🤖 Spotlight AI
                             </span>
                         </div>
                         <div className="chat-typing">

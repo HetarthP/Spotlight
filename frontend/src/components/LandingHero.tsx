@@ -21,7 +21,7 @@ export function LandingHero({ session }: { session: SessionData | null }) {
                             <Sparkles className="w-4 h-4 text-teal-400" />
                         </div>
                     </div>
-                    <span className="text-white font-bold text-xl tracking-tight">adswap</span>
+                    <span className="text-white font-bold text-xl tracking-tight">Spotlight</span>
                 </div>
                 <div className="flex gap-4 items-center">
                     {session ? (
@@ -59,7 +59,7 @@ export function LandingHero({ session }: { session: SessionData | null }) {
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="text-6xl md:text-8xl font-black text-white tracking-tight mb-6 leading-tight"
                 >
-                    Where Editor <br />
+                    Where Media <br />
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-teal-600">
                         Meets AI
                     </span>
@@ -78,17 +78,12 @@ export function LandingHero({ session }: { session: SessionData | null }) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
-                    className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+                    className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4"
                 >
-                    <Link href={session ? "/create" : "/login"} className="w-full sm:w-auto flex">
-                        <ShinyButton className="w-full sm:w-auto transition-transform hover:scale-105">
-                            Get Started
-                        </ShinyButton>
-                    </Link>
-                    <Link href="/create" className="w-full sm:w-auto flex">
-                        <ShinyButton className="w-full sm:w-auto transition-transform hover:scale-105 gap-2">
-                            Create a Project
-                            <ArrowRight className="w-5 h-5 ml-2" />
+                    <Link href={session ? "/library" : "/login"} className="w-full sm:w-auto flex">
+                        <ShinyButton className="w-full sm:w-auto transition-transform hover:scale-105 flex items-center justify-center gap-2">
+                            <span>Get Started</span>
+                            <ArrowRight className="w-5 h-5 relative top-[1px]" />
                         </ShinyButton>
                     </Link>
                 </motion.div>

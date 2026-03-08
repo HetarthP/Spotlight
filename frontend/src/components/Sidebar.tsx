@@ -14,7 +14,6 @@ export function CustomSidebar() {
     const navItems = [
         { name: "Home", href: "/", icon: Home },
         { name: "Video Library", href: "/library", icon: Library },
-        { name: "Settings", href: "/settings", icon: Settings },
     ];
 
     return (
@@ -130,7 +129,7 @@ function Logo({ open }: { open: boolean }) {
                 }}
                 className="text-white font-bold text-xl tracking-tight whitespace-pre"
             >
-                adswap
+                Spotlight
             </motion.span>
         </Link>
     );
