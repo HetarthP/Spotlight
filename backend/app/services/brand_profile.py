@@ -55,13 +55,17 @@ _DEFAULT_PROFILE = _MOCK_BRAND_PROFILES["auth0|default"]
 def get_user_brand_profile(user_id: str) -> dict:
     """
     Retrieve the brand profile for a given Auth0 user ID.
-
-    Args:
-        user_id: The Auth0 `sub` claim (e.g. "auth0|abc123").
-
-    Returns:
-        A dict with brand_name, industry, budget, target_demo, tone, goals.
-        Falls back to a default test profile if the user is unknown.
     """
-    # ── FUTURE: Replace the line below with a database query ──
     return _MOCK_BRAND_PROFILES.get(user_id, _DEFAULT_PROFILE)
+
+
+def update_user_brand_profile(user_id: str, updates: dict) -> dict:
+    """
+    Update the brand profile for a given user ID.
+    In this mock implementation, it just updates the in-memory dictionary.
+    """
+    if user_id not in _MOCK_BRAND_PROFILES:
+        _MOCK_BRAND_PROFILES[user_id] = _DEFAULT_PROFILE.copy()
+    
+    _MOCK_BRAND_PROFILES[user_id].update(updates)
+    return _MOCK_BRAND_PROFILES[user_id]

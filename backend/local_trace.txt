@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "C:\Users\ryann\OneDrive\Desktop\projects\VPP\HackCanada\backend\app\services\fal_engine.py", line 118, in submit_kling_omni_v2v
+    safe_video_url = await loop.run_in_executor(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryann\OneDrive\Desktop\projects\VPP\HackCanada\backend\app\services\fal_engine.py", line 120, in <lambda>
+    lambda: upload_url_to_fal(video_url, is_video=True, start_time=start_time, end_time=end_time)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ryann\OneDrive\Desktop\projects\VPP\HackCanada\backend\app\services\fal_engine.py", line 61, in upload_url_to_fal
+    from moviepy.editor import VideoFileClip
+ModuleNotFoundError: No module named 'moviepy'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\ryann\OneDrive\Desktop\projects\VPP\HackCanada\backend\app\services\fal_engine.py", line 154, in submit_kling_omni_v2v
+    raise RuntimeError(f"Kling V2V generation failed: {str(e)}")
+RuntimeError: Kling V2V generation failed: No module named 'moviepy'
